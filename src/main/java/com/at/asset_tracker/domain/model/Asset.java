@@ -12,7 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(
     name = "assets",
@@ -45,11 +47,4 @@ public class Asset {
         this.unit = unit;
     }
 
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public AssetType getType() {
-        return type;
-    }
 }
