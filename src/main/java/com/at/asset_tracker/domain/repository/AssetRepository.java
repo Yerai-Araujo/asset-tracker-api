@@ -1,14 +1,17 @@
 package com.at.asset_tracker.domain.repository;
 
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.at.asset_tracker.domain.model.Asset;
 
+public interface AssetRepository {
 
-public interface AssetRepository extends JpaRepository<Asset, Long> {
-
-    Optional<Asset> findBySymbol(String symbol);
+    Asset save(Asset asset);
 
     boolean existsBySymbol(String symbol);
+
+    Optional<Asset> findById(Long id);
+
 }
+
 

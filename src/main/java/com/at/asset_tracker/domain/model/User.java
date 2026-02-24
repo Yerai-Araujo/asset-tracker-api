@@ -1,49 +1,34 @@
 package com.at.asset_tracker.domain.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "users")
 public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
     private String name;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
-    private Portfolio portfolio;
+    private Long portfolioId;
 
-    protected User() {}
 
-    public User(String email, String name) {
+    public User(Long id, String email, String name, Long portfolioId) {
+
+        if(email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+        if(name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+        
+        this.id = id;
         this.email = email;
         this.name = name;
-        this.portfolio = new Portfolio(this);
+        this.portfolioId = portfolioId;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long id() { return id; }
+    public String email() { return email; }
+    public String name() { return name; }
+    public Long portfolioId() { return portfolioId; }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public Portfolio getPortfolio() {
-        return portfolio;
-    }
 }
-

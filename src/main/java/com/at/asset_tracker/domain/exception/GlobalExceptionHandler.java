@@ -19,6 +19,14 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(MarketPriceProviderException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleMarketPriceProvider(MarketPriceProviderException ex) {
+        return Map.of(
+                "error", ex.getMessage()
+        );
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidation(MethodArgumentNotValidException ex) {

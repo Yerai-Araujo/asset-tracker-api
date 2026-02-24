@@ -1,14 +1,16 @@
 package com.at.asset_tracker.domain.repository;
 
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.at.asset_tracker.domain.model.User;
 
+public interface UserRepository {
 
-public interface UserRepository extends JpaRepository<User, Long> {
+    User save(User user);
+
+    Optional<User> findById(Long id);
 
     Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);
 }
-

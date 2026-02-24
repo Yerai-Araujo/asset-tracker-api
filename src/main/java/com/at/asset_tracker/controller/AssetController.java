@@ -1,50 +1,60 @@
 package com.at.asset_tracker.controller;
 
-import java.util.List;
+import java.net.URI;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.at.asset_tracker.application.dto.request.CreateAssetRequest;
 import com.at.asset_tracker.application.dto.response.AssetResponse;
-import com.at.asset_tracker.application.mapper.AssetMapper;
-import com.at.asset_tracker.application.service.AssetService;
+import com.at.asset_tracker.application.service.AssetApplicationService;
 import com.at.asset_tracker.domain.model.Asset;
-
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/assets")
-@RequiredArgsConstructor
 public class AssetController {
 
-    private final AssetService assetService;
-    private final AssetMapper assetMapper;
+    private final AssetApplicationService assetService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public AssetResponse create(@Valid @RequestBody CreateAssetRequest request) {
-
-        Asset asset = assetService.createAsset(
-                request.symbol(),
-                request.type(),
-                request.unit()
-        );
-
-        return assetMapper.toResponse(asset);
+    public AssetController(AssetApplicationService assetService) {
+        this.assetService = assetService;
     }
 
-    @GetMapping
-    public List<AssetResponse> findAll() {
-        return assetService.getAllAssets()
-                .stream()
-                .map(assetMapper::toResponse)
-                .toList();
+    @PostMapping
+    public ResponseEntity<AssetResponse> create(@RequestBody CreateAssetRequest request) {
+
+        Asset asset = assetService.create(
+                request.symbol(),
+                request.type(),
+                request.unit(),
+                request.name()
+        );
+
+        return ResponseEntity
+        .created(URI.create("/api/assets/" + asset.id()))
+        .body(toResponse(asset));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AssetResponse> findById(@PathVariable Long id) {
+
+        Asset asset = assetService.findById(id);
+
+        return ResponseEntity.ok(toResponse(asset));
+    }
+
+    private AssetResponse toResponse(Asset asset) {
+        return new AssetResponse(
+                asset.id(),
+                asset.symbol(),
+                asset.type(),
+                asset.unit(),
+                asset.name()
+        );
     }
 }

@@ -3,48 +3,52 @@ package com.at.asset_tracker.domain.model;
 import com.at.asset_tracker.domain.model.enums.AssetType;
 import com.at.asset_tracker.domain.model.enums.AssetUnit;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
-import lombok.Getter;
-
-@Getter
-@Entity
-@Table(
-    name = "assets",
-    indexes = {
-        @Index(name = "idx_asset_symbol", columnList = "symbol")
-    }
-)
 public class Asset {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final Long id;
+    private final String symbol;
+    private final AssetType type;
+    private final AssetUnit unit;
+    private final String name;
 
-    @Column(nullable = false, unique = true)
-    private String symbol;
+    public Asset(Long id, String symbol, AssetType type, AssetUnit unit, String name) {
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AssetType type;
+        if (symbol == null || symbol.isBlank())
+            throw new IllegalArgumentException("Symbol required");
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AssetUnit unit;
+        if (type == null)
+            throw new IllegalArgumentException("Type required");
 
-    protected Asset() {}
+        if (unit == null)
+            throw new IllegalArgumentException("Unit required");
 
-    public Asset(String symbol, AssetType type, AssetUnit unit) {
+        if (name == null || name.isBlank())
+            throw new IllegalArgumentException("Name required");
+
+        this.id = id;
         this.symbol = symbol;
         this.type = type;
         this.unit = unit;
+        this.name = name;
     }
 
+    public Long id() {
+        return id;
+    }
+
+    public String symbol() {
+        return symbol;
+    }
+
+    public AssetType type() {
+        return type;
+    }
+
+    public AssetUnit unit() {
+        return unit;
+    }
+    
+    public String name() {
+        return name;
+    }
 }
