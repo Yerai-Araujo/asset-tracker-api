@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.at.asset_tracker.market.application.service.MarketPriceService;
 import com.at.asset_tracker.portfolio.domain.model.Portfolio;
-import com.at.asset_tracker.market.domain.model.MarketPriceProvider;
 import com.at.asset_tracker.portfolio.domain.repository.AssetRepository;
 import com.at.asset_tracker.portfolio.domain.repository.PortfolioRepository;
 
@@ -15,13 +15,13 @@ import com.at.asset_tracker.portfolio.domain.repository.PortfolioRepository;
 public class PortfolioApplicationService {
 
     private final PortfolioRepository portfolioRepository;
-    private final MarketPriceProvider marketPriceProvider;
+    private final MarketPriceService marketPriceService;
     private final AssetRepository assetRepository;
 
     public PortfolioApplicationService(PortfolioRepository portfolioRepository,
-            MarketPriceProvider marketPriceProvider, AssetRepository assetRepository) {
+            MarketPriceService marketPriceService, AssetRepository assetRepository) {
         this.portfolioRepository = portfolioRepository;
-        this.marketPriceProvider = marketPriceProvider;
+        this.marketPriceService = marketPriceService;
         this.assetRepository = assetRepository;
     }
 
@@ -65,7 +65,7 @@ public class PortfolioApplicationService {
                     var asset = assetRepository.findById(item.assetId())
                             .orElseThrow(() -> new RuntimeException("Asset not found"));
 
-                    BigDecimal price = marketPriceProvider
+                    BigDecimal price = marketPriceService
                             .getCurrentPrice(asset.symbol(), asset.type());
 
                     return price.multiply(item.quantity());

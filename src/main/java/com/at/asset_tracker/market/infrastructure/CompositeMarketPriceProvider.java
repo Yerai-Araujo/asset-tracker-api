@@ -1,4 +1,4 @@
-package com.at.asset_tracker.market.application.service;
+package com.at.asset_tracker.market.infrastructure;
 
 import java.math.BigDecimal;
 import java.util.List;

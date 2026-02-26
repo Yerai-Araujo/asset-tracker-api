@@ -1,4 +1,4 @@
-package com.at.asset_tracker.market.application.service;
+package com.at.asset_tracker.market.infrastructure;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -8,7 +8,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.at.asset_tracker.portfolio.domain.model.enums.AssetType;
 
-import lombok.extern.java.Log;
 
 import com.at.asset_tracker.market.domain.model.MarketPriceProvider;
 import com.at.asset_tracker.market.domain.exception.MarketPriceProviderException;
