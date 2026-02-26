@@ -5,5 +5,9 @@ public class MarketPriceProviderException extends RuntimeException {
     public MarketPriceProviderException(String message) {
         super(message);
     }
+
+    public MarketPriceProviderException(String message, Throwable cause) {
+        super(message, cause);
+    }
     
 }
