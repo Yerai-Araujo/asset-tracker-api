@@ -47,6 +47,7 @@ public class CoinGeckoMarketPriceProvider implements MarketPriceProvider {
             throw new MarketPriceProviderException("Invalid crypto response");
         }
 
+        System.out.println("Calling external API...");
         Map priceData = (Map) response.get(id);
         return new BigDecimal(priceData.get("usd").toString());
     }
